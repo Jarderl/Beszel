@@ -1,0 +1,28 @@
+# =====================================================================
+#  Beszel — agente para um servidor remoto
+#
+#  Copie esta pasta para o servidor que será monitorado, crie o .env
+#  com os valores do diálogo "Add System" do hub e suba com:
+#      docker compose up -d
+#  Com HUB_URL e TOKEN o agente abre a conexão de saída para o hub
+#  (WebSocket), então este servidor não precisa de porta liberada.
+# =====================================================================
+
+name: beszel-agent
+
+services:
+  beszel-agent:
+    image: henrygd/beszel-agent:${BESZEL_TAG:-latest}
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      LISTEN: ${AGENT_PORT:-45876}
+      HUB_URL: ${HUB_URL:?defina HUB_URL no .env}
+      TOKEN: ${AGENT_TOKEN:?defina AGENT_TOKEN no .env}
+      KEY: ${AGENT_KEY:?defina AGENT_KEY no .env}
+    volumes:
+      - ./beszel_agent_data:/var/lib/beszel-agent
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Para monitorar outro disco, descomente e ajuste o caminho:
+      # - /mnt/dados/.beszel:/extra-filesystems/dados:ro
