@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-labelledby="t d">
+  <title id="t">Beszel: monitoramento leve de servidores</title>
+  <desc id="d">Os agentes coletam CPU, memória, disco, rede, temperatura e containers de cada servidor e enviam ao hub, que guarda o histórico e mostra os gráficos. O hub é publicado com HTTPS pelo Nginx Proxy Manager. O agente local usa um socket Unix; os agentes remotos abrem uma conexão de saída com token, sem porta liberada.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#121c33"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.32" r="0.6">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.09"/>
+      <stop offset="1" stop-color="#22c55e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16213a"/>
+      <stop offset="1" stop-color="#111a2e"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#1b2742" stroke-width="1"/>
+    </pattern>
+    <marker id="fwd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#4ade80"/>
+    </marker>
+    <style>
+      text { font-family: Inter, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .mono, .mono text { font-family: "JetBrains Mono", "SFMono-Regular", Consolas, "DejaVu Sans Mono", monospace; }
+      .h { fill: #f1f5f9; font-weight: 700; }
+      .p { fill: #cbd5e1; font-size: 13px; }
+      .s { fill: #94a3b8; }
+      .flow { stroke: #4ade80; stroke-width: 2.4; fill: none; stroke-dasharray: 6 6; animation: run 1.2s linear infinite; }
+      .spark { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      @keyframes run { to { stroke-dashoffset: -24; } }
+    </style>
+  </defs>
+
+  <!-- fundo -->
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect width="1280" height="720" fill="url(#grid)" opacity="0.55"/>
+  <rect width="1280" height="720" fill="url(#halo)"/>
+
+  <!-- cabeçalho -->
+  <text x="36" y="66" class="h" font-size="34">Beszel</text>
+  <text x="36" y="96" class="s" font-size="15">Monitoramento leve: cada servidor envia as métricas, um painel guarda o histórico e avisa quando algo sai do normal</text>
+  <g transform="translate(1044 42)">
+    <rect width="200" height="32" rx="16" fill="#0d2a18" stroke="#22c55e" stroke-opacity="0.6"/>
+    <text x="100" y="21" text-anchor="middle" class="mono" font-size="12.5" fill="#86efac">$ docker compose up -d</text>
+  </g>
+
+  <!-- setas do fluxo -->
+  <g>
+    <path class="flow" d="M301 236H345" marker-end="url(#fwd)"/>
+    <path class="flow" d="M616 236H660" marker-end="url(#fwd)"/>
+    <path class="flow" d="M931 236H975" marker-end="url(#fwd)"/>
+    <text x="323" y="222" text-anchor="middle" class="mono" font-size="12" font-weight="700" fill="#86efac">envia</text>
+    <text x="638" y="222" text-anchor="middle" class="mono" font-size="12" font-weight="700" fill="#86efac">:8090</text>
+    <text x="953" y="222" text-anchor="middle" class="mono" font-size="12" font-weight="700" fill="#86efac">HTTPS</text>
+  </g>
+
+  <!-- 1. Agentes -->
+  <g transform="translate(36 150)">
+    <rect width="263" height="180" rx="16" fill="url(#card)" stroke="#2a3756"/>
+    <rect x="18" width="227" height="3" rx="1.5" fill="#fbbf24"/>
+    <circle cx="44" cy="46" r="22" fill="#fbbf24" fill-opacity="0.12" stroke="#fbbf24" stroke-opacity="0.5"/>
+    <g fill="none" stroke="#fcd34d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="32" y="35" width="24" height="10" rx="2"/>
+      <rect x="32" y="49" width="24" height="10" rx="2"/>
+      <path d="M37 40H37.5M37 54H37.5"/>
+    </g>
+    <text x="78" y="42" class="h" font-size="16">Agentes</text>
+    <text x="78" y="60" class="mono" font-size="11" fill="#fbbf24">beszel-agent</text>
+    <text x="22" y="104" class="p">Um em cada servidor, coletando</text>
+    <text x="22" y="124" class="p">sistema e containers.</text>
+    <text x="22" y="156" class="mono" font-size="11.5" fill="#94a3b8">network_mode: host</text>
+  </g>
+
+  <!-- 2. Hub -->
+  <g transform="translate(351 150)">
+    <rect width="263" height="180" rx="16" fill="url(#card)" stroke="#22c55e" stroke-opacity="0.55"/>
+    <rect x="18" width="227" height="3" rx="1.5" fill="#22c55e"/>
+    <circle cx="44" cy="46" r="22" fill="#22c55e" fill-opacity="0.14" stroke="#22c55e" stroke-opacity="0.6"/>
+    <path class="spark" stroke="#86efac" d="M32 52L38 45L43 49L49 39L56 44"/>
+    <text x="78" y="42" class="h" font-size="16">Hub</text>
+    <text x="78" y="60" class="mono" font-size="11" fill="#22c55e">painel web</text>
+    <text x="22" y="104" class="p">Gráficos, histórico, usuários</text>
+    <text x="22" y="124" class="p">e regras de alerta.</text>
+    <text x="22" y="156" class="mono" font-size="11.5" fill="#94a3b8">./beszel_data</text>
+  </g>
+
+  <!-- 3. Proxy reverso -->
+  <g transform="translate(666 150)">
+    <rect width="263" height="180" rx="16" fill="url(#card)" stroke="#2a3756"/>
+    <rect x="18" width="227" height="3" rx="1.5" fill="#22d3ee"/>
+    <circle cx="44" cy="46" r="22" fill="#22d3ee" fill-opacity="0.12" stroke="#22d3ee" stroke-opacity="0.5"/>
+    <g fill="none" stroke="#67e8f9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M44 34L54 38V46C54 52 50 56 44 59C38 56 34 52 34 46V38Z"/>
+      <path d="M40 46L43 49L49 43"/>
+    </g>
+    <text x="78" y="42" class="h" font-size="16">Proxy reverso</text>
+    <text x="78" y="60" class="mono" font-size="11" fill="#22d3ee">Nginx Proxy Manager</text>
+    <text x="22" y="104" class="p">Domínio com HTTPS e suporte</text>
+    <text x="22" y="124" class="p">a WebSocket ligado.</text>
+    <text x="22" y="156" class="mono" font-size="11.5" fill="#94a3b8">monitor.seudominio</text>
+  </g>
+
+  <!-- 4. Você -->
+  <g transform="translate(981 150)">
+    <rect width="263" height="180" rx="16" fill="url(#card)" stroke="#2a3756"/>
+    <rect x="18" width="227" height="3" rx="1.5" fill="#a78bfa"/>
+    <circle cx="44" cy="46" r="22" fill="#a78bfa" fill-opacity="0.12" stroke="#a78bfa" stroke-opacity="0.5"/>
+    <g fill="none" stroke="#c4b5fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M38 52V45A6 6 0 0 1 50 45V52L52 55H36Z"/>
+      <path d="M42 58H46"/>
+    </g>
+    <text x="78" y="42" class="h" font-size="16">Você</text>
+    <text x="78" y="60" class="mono" font-size="11" fill="#a78bfa">navegador e alertas</text>
+    <text x="22" y="104" class="p">Painel no celular ou no PC e</text>
+    <text x="22" y="124" class="p">avisos por e-mail ou Telegram.</text>
+    <text x="22" y="156" class="mono" font-size="11.5" fill="#94a3b8">Settings → Notifications</text>
+  </g>
+
+  <!-- tipos de conexão do agente -->
+  <g transform="translate(36 362)">
+    <rect width="590" height="78" rx="14" fill="#0f1a2e" stroke="#2a3756"/>
+    <text x="22" y="30" class="s" font-size="12">Agente local: mesmo servidor do hub, sem rede envolvida</text>
+    <text x="22" y="56" class="mono" font-size="14.5" font-weight="700" fill="#fcd34d">/beszel_socket/beszel.sock</text>
+  </g>
+  <g transform="translate(654 362)">
+    <rect width="590" height="78" rx="14" fill="#0f1a2e" stroke="#2a3756"/>
+    <text x="22" y="30" class="s" font-size="12">Agente remoto: abre a conexão de saída, sem porta liberada no servidor</text>
+    <text x="22" y="56" class="mono" font-size="14.5" font-weight="700" fill="#86efac">HUB_URL + TOKEN + KEY</text>
+  </g>
+
+  <!-- painel: métricas -->
+  <g transform="translate(36 474)">
+    <rect width="590" height="206" rx="16" fill="#0f1a2e" stroke="#2a3756"/>
+    <text x="22" y="36" class="h" font-size="16">O que aparece no painel</text>
+    <g font-size="12.5" fill="#e2e8f0">
+      <g transform="translate(22 56)">
+        <rect width="128" height="56" rx="10" fill="#22c55e" fill-opacity="0.07" stroke="#22c55e" stroke-opacity="0.35"/>
+        <text x="12" y="22">CPU</text>
+        <path class="spark" stroke="#4ade80" d="M12 44L30 38L46 41L62 30L80 34L98 26L116 31"/>
+      </g>
+      <g transform="translate(162 56)">
+        <rect width="128" height="56" rx="10" fill="#22d3ee" fill-opacity="0.07" stroke="#22d3ee" stroke-opacity="0.35"/>
+        <text x="12" y="22">Memória</text>
+        <path class="spark" stroke="#67e8f9" d="M12 38L30 37L46 35L62 36L80 33L98 33L116 32"/>
+      </g>
+      <g transform="translate(302 56)">
+        <rect width="128" height="56" rx="10" fill="#fbbf24" fill-opacity="0.07" stroke="#fbbf24" stroke-opacity="0.35"/>
+        <text x="12" y="22">Disco</text>
+        <path class="spark" stroke="#fcd34d" d="M12 42L46 41L80 39L116 38"/>
+      </g>
+      <g transform="translate(442 56)">
+        <rect width="126" height="56" rx="10" fill="#a78bfa" fill-opacity="0.07" stroke="#a78bfa" stroke-opacity="0.35"/>
+        <text x="12" y="22">Rede</text>
+        <path class="spark" stroke="#c4b5fd" d="M12 44L28 30L44 42L60 28L76 40L92 33L114 39"/>
+      </g>
+      <g transform="translate(22 126)">
+        <rect width="128" height="56" rx="10" fill="#f43f5e" fill-opacity="0.07" stroke="#f43f5e" stroke-opacity="0.35"/>
+        <text x="12" y="22">Temperatura</text>
+        <path class="spark" stroke="#fda4af" d="M12 40L46 38L80 36L116 37"/>
+      </g>
+      <g transform="translate(162 126)">
+        <rect width="128" height="56" rx="10" fill="#38bdf8" fill-opacity="0.07" stroke="#38bdf8" stroke-opacity="0.35"/>
+        <text x="12" y="22">Containers</text>
+        <g fill="#7dd3fc" opacity="0.8">
+          <rect x="12" y="32" width="18" height="12" rx="2"/><rect x="34" y="32" width="18" height="12" rx="2"/>
+          <rect x="56" y="32" width="18" height="12" rx="2"/><rect x="78" y="32" width="18" height="12" rx="2"/>
+        </g>
+      </g>
+      <g transform="translate(302 126)">
+        <rect width="266" height="56" rx="10" fill="#94a3b8" fill-opacity="0.05" stroke="#475569"/>
+        <text x="12" y="22">Alertas</text>
+        <text x="12" y="42" class="s" font-size="11.5">fora do ar · CPU · disco · temperatura</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- painel: instalação -->
+  <g transform="translate(654 474)">
+    <rect width="590" height="206" rx="16" fill="#0f1a2e" stroke="#2a3756"/>
+    <text x="22" y="36" class="h" font-size="16">Instalação em quatro passos</text>
+    <g class="mono" font-size="12.5">
+      <g transform="translate(22 56)">
+        <circle cx="12" cy="12" r="12" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e"/>
+        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" fill="#86efac">1</text>
+        <text x="36" y="17" fill="#e2e8f0">docker compose up -d beszel</text>
+      </g>
+      <g transform="translate(22 90)">
+        <circle cx="12" cy="12" r="12" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e"/>
+        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" fill="#86efac">2</text>
+        <text x="36" y="17" fill="#e2e8f0">criar o admin em :8090</text>
+      </g>
+      <g transform="translate(22 124)">
+        <circle cx="12" cy="12" r="12" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e"/>
+        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" fill="#86efac">3</text>
+        <text x="36" y="17" fill="#e2e8f0">Add System → KEY e TOKEN no .env</text>
+      </g>
+      <g transform="translate(22 158)">
+        <circle cx="12" cy="12" r="12" fill="#22c55e" fill-opacity="0.15" stroke="#22c55e"/>
+        <text x="12" y="16.5" text-anchor="middle" font-size="12" font-weight="700" fill="#86efac">4</text>
+        <text x="36" y="17" fill="#e2e8f0">docker compose up -d beszel-agent</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- rodapé -->
+  <text x="640" y="706" text-anchor="middle" class="mono" font-size="11" fill="#475569">github.com/Jarderl/Beszel</text>
+</svg>
